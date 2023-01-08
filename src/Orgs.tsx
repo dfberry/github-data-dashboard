@@ -30,6 +30,7 @@ function Org(): JSX.Element {
   return (
     <div className="App">
           <div>Data collected on {collectionDate.slice(0,10)}</div>
+          <div>{data.length} repos</div>
           <DataTableOrg data={data} />
 
     </div>

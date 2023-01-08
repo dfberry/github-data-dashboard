@@ -68,7 +68,7 @@ function Table({ columns, data }: any) {
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
-                  return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
+                  return <td {...cell.getCellProps()}>{cell.column.id === 'rowNumber' ? i + 1 : cell.render('Cell')}</td>;
                 })}
               </tr>
             );
@@ -81,6 +81,10 @@ function Table({ columns, data }: any) {
     {
       Header: "Repos",
       columns: [
+        {
+          Header: "#",
+          id: 'rowNumber',
+        },
         {
           Header: "Stars",
           accessor: "stars",
