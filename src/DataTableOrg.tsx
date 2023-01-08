@@ -1,11 +1,15 @@
-import { useTable } from "react-table";
+// @ts-nocheck
+
+import { useTable, useSortBy } from "react-table";
 import styled from "styled-components";
 
 const Styles = styled.div`
   padding: 1rem;
+
   table {
     border-spacing: 0;
     border: 1px solid black;
+
     tr {
       :last-child {
         td {
@@ -13,12 +17,14 @@ const Styles = styled.div`
         }
       }
     }
+
     th,
     td {
       margin: 0;
       padding: 0.5rem;
       border-bottom: 1px solid black;
       border-right: 1px solid black;
+
       :last-child {
         border-right: 0;
       }
@@ -31,7 +37,8 @@ function Table({ columns, data }: any) {
       useTable({
         columns,
         data,
-      });
+      },
+      useSortBy);
   
     // Render the UI for your table
     return (
@@ -40,7 +47,17 @@ function Table({ columns, data }: any) {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+                <th {...column.getHeaderProps(column.getSortByToggleProps())}>{
+                  column.render("Header")
+                  }
+                  <span>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼'
+                      : ''}
+                  </span>
+                  </th>
               ))}
             </tr>
           ))}
@@ -65,10 +82,6 @@ function Table({ columns, data }: any) {
       Header: "Repos",
       columns: [
         {
-          Header: "Repo",
-          accessor: "repositoryName",
-        },
-        {
           Header: "Stars",
           accessor: "stars",
         },
@@ -76,6 +89,11 @@ function Table({ columns, data }: any) {
           Header: "Forks",
           accessor: "forks",
         },
+        {
+          Header: "Repo",
+          accessor: "repositoryName",
+        },
+
         {
           Header: "Issues",
           accessor: "issues",
