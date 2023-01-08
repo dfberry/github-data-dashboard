@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { RequestOptions } from "https";
 import DataTableOrg from './DataTableOrg';
 
 const url = process.env.REACT_APP_FN_BASE;
@@ -11,13 +10,11 @@ function Org(): JSX.Element {
   const [data, setData] = useState([]);
   const [collectionDate, setCollectionData] = useState("");
 
-  var requestOptions:RequestInit = {
-    method: 'GET',
-    redirect: 'follow'
-  };
-
   useEffect(() => {
-    fetch(`${url}/org?code=${code}`,requestOptions)
+    fetch(`${url}/org?code=${code}`,{
+        method: 'GET',
+        redirect: 'follow'
+      })
     .then(response => response.json())
     .then(data => {
       //console.log(data);
