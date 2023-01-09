@@ -81,7 +81,7 @@ function Table({ columns, data }: any) {
             accessor: "forks",
           },
           {
-            Header: "Data",
+            Header: "Date",
             accessor: "customDateUploaded",
             Cell: (row: any) => {
               //console.log(row.cell.value);
