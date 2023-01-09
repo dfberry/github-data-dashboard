@@ -35,7 +35,6 @@ function Repo(): JSX.Element {
       .then((response) => response.json())
       // 4. Setting *dogImage* to the image url that we received from the response above
       .then((data) => {
-        //console.log(data);
         setLoading(false);
         setData(data);
       })

@@ -17,7 +17,6 @@ function Org(): JSX.Element {
     })
       .then((response) => response.json())
       .then((data) => {
-        //console.log(data);
         setData(data);
         setLoading(false);
         setCollectionData(data[0]?.customDateUploaded);
