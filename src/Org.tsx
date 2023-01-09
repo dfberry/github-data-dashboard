@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import DataTableOrg from "./DataTableOrg";
+import DataTableOrg from "./OrgDataTable";
 
 const url = process.env.REACT_APP_FN_BASE;
 const code = process.env.REACT_APP_FN_ORG_CODE;
@@ -30,9 +30,7 @@ function Org(): JSX.Element {
       {loading && <div>...Loading</div>}
       {!loading && (
         <>
-          <div>Data collected on {collectionDate.slice(0, 10)}</div>
-          <div>{data.length} repos</div>
-          <DataTableOrg data={data} />
+          <DataTableOrg data={data} collectionDate={collectionDate.slice(0, 10)} />
         </>
       )}
     </div>

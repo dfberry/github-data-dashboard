@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import { useSearchParams } from "react-router-dom";
-import DataTableRepos from "./DataTableRepos";
+import DataTableRepos from "./RepoDataTable";
 
 const url = process.env.REACT_APP_FN_BASE;
 const code = process.env.REACT_APP_FN_REPO_CODE;
@@ -35,7 +35,7 @@ function Repo(): JSX.Element {
       .then((response) => response.json())
       // 4. Setting *dogImage* to the image url that we received from the response above
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         setLoading(false);
         setData(data);
       })
