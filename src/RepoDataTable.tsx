@@ -83,6 +83,12 @@ function Table({ columns, data }: any) {
           {
             Header: "Data",
             accessor: "customDateUploaded",
+            Cell: (row: any) => {
+              //console.log(row.cell.value);
+              const currentDate = row.cell.value;
+              if (!currentDate) return "";
+              return currentDate.slice(0, 10);
+            },
           },
           {
             Header: "Issues",
