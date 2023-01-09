@@ -26,74 +26,82 @@ const Styles = styled.div`
   }
 `;
 function Table({ columns, data }: any) {
-    // Use the state and functions returned from useTable to build your UI
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-      useTable({
-        columns,
-        data,
-      });
-  
-    // Render the UI for your table
-    return (
-      <table {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-              ))}
+  // Use the state and functions returned from useTable to build your UI
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({
+      columns,
+      data,
+    });
+
+  // Render the UI for your table
+  return (
+    <table {...getTableProps()}>
+      <thead>
+        {headerGroups.map((headerGroup) => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
+              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map((row, i) => {
+          prepareRow(row);
+          return (
+            <tr {...row.getRowProps()}>
+              {row.cells.map((cell) => {
+                return (
+                  <td {...cell.getCellProps()}>
+                    {cell.column.id === "rowNumber"
+                      ? i + 1
+                      : cell.render("Cell")}
+                  </td>
+                );
+              })}
             </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row, i) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    );
-  }
+          );
+        })}
+      </tbody>
+    </table>
+  );
+}
 
+function SummaryDataTable({ data }: any): JSX.Element {
+  console.log(data);
 
-  function SummaryDataTable({data}:any): JSX.Element{
-
-    console.log(data);
-
-    const columns = [
-      {
-        Header: "Data catalog",
-        columns: [
-          {
-            Header: "Data",
-            accessor: "date",
-            Cell: (row:any) => {
-                //console.log(row.cell.value);
-                const currentDate = row.cell.value;
-                if (!currentDate) return "";
-                return currentDate.slice(0,10);
-                return row;
-              }
+  const columns = [
+    {
+      Header: "Data catalog",
+      columns: [
+        {
+          Header: "#",
+          id: "rowNumber",
+        },
+        {
+          Header: "Date",
+          accessor: "date",
+          Cell: (row: any) => {
+            //console.log(row.cell.value);
+            const currentDate = row.cell.value;
+            if (!currentDate) return "";
+            return currentDate.slice(0, 10);
+            return row;
           },
-          {
-            Header: "Count",
-            accessor: "count",
-          }
-        ],
-      },
-    ];
+        },
+        {
+          Header: "Repo count",
+          accessor: "count",
+        },
+      ],
+    },
+  ];
 
-    return (
-          <Styles>
-              <Table columns={columns} data={data} />
-          </Styles>
-      );
-  }
+  return (
+    <Styles>
+      <Table columns={columns} data={data} />
+    </Styles>
+  );
+}
 
-  export default SummaryDataTable;
+export default SummaryDataTable;
