@@ -1,16 +1,23 @@
-
 import "./App.css";
-import Org from './Orgs';
+import Org from "./Org";
+import Repo from "./Repo";
+import Layout from './Layout';
+
+import { Routes, Route} from "react-router-dom";
 
 function App(): JSX.Element {
-
   return (
     <div className="App">
 
-          <Org />
-
+      <Layout>
+      <Routes>
+        <Route path="/" element={<Org />}/>
+        <Route path="repo" element={<Repo />} />
+        <Route path="*" element={<Org />} />
+      </Routes>
+      </Layout>
+      
     </div>
   );
-}
-
+};
 export default App;

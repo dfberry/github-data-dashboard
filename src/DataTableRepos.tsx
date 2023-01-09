@@ -60,23 +60,38 @@ function Table({ columns, data }: any) {
       </table>
     );
   }
-  const columns = [
-    {
-      Header: "Name",
-      columns: [
-        {
-          Header: "RepositoryName",
-          accessor: "repositoryName",
-        },
-        {
-          Header: "Url",
-          accessor: "url",
-        },
-      ],
-    },
-  ];
 
-  function DataTableRepos({data}:any): JSX.Element{
+
+  function DataTableRepos({data, name}:any): JSX.Element{
+
+    const columns = [
+      {
+        Header: name,
+        columns: [
+          {
+            Header: "Stars",
+            accessor: "stars",
+          },
+          {
+            Header: "Forks",
+            accessor: "forks",
+          },
+          {
+            Header: "Data",
+            accessor: "customDateUploaded",
+          },
+          {
+            Header: "Issues",
+            accessor: "issues",
+          },
+          {
+            Header: "PRs",
+            accessor: "pr",
+          }
+        ],
+      },
+    ];
+
     return (
           <Styles>
               <Table columns={columns} data={data} />
