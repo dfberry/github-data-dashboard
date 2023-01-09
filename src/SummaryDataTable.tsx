@@ -86,7 +86,6 @@ function SummaryDataTable({ data }: any): JSX.Element {
             const currentDate = row.cell.value;
             if (!currentDate) return "";
             return currentDate.slice(0, 10);
-            return row;
           },
         },
         {
