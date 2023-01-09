@@ -68,7 +68,6 @@ function Table({ columns, data }: any) {
 }
 
 function SummaryDataTable({ data }: any): JSX.Element {
-  console.log(data);
 
   const columns = [
     {
