@@ -5,7 +5,9 @@ import Summary from "./Summary";
 import Layout from "./Layout";
 import { Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider} from "react-query";
-import { ReactQueryDevtools } from 'react-query/devtools';
+
+// Add by wrapping HTML with <ReactQueryDevtools initialIsOpen/>
+//import { ReactQueryDevtools } from 'react-query/devtools';
 
 const queryClient = new QueryClient();
 
@@ -23,7 +25,6 @@ function App(): JSX.Element {
           </Routes>
         </Layout>
       </div>
-      <ReactQueryDevtools initialIsOpen/>
     </QueryClientProvider>
   );
 }
