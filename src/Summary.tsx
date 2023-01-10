@@ -1,39 +1,64 @@
-import { useState, useEffect } from "react";
+import { useQuery } from "react-query";
 import SummaryDataTable from "./SummaryDataTable";
+import {ErrorBoundary} from 'react-error-boundary'
 
-const url = process.env.REACT_APP_FN_BASE;
-const code = process.env.REACT_APP_FN_SUMMARY_CODE;
+function ErrorFallback({error, resetErrorBoundary}:any) {
+  return (
+    <div role="alert">
+      <p>Something went wrong:</p>
+      <pre>{error.message}</pre>
+      <button onClick={resetErrorBoundary}>Try again</button>
+    </div>
+  )
+}
+
+
 
 function Summary(): JSX.Element {
-    const [loading, setLoading] = useState(true);
-    const [data, setData] = useState([]);
-  
-    useEffect(() => {
+  const { status, data, error, isFetching } = useSummary();
 
-      fetch(`${url}/sum?code=${code}`, {
-        method: "GET",
-        redirect: "follow",
-      })
-        .then((response) => response.json())
-        // 4. Setting *dogImage* to the image url that we received from the response above
-        .then((data) => {
-          setLoading(false);
-          setData(data);
-        })
-        .catch((err) => console.log(err.message));
-    }, []);
-  
-    return (
-      <div className="App">
-        {loading && <div>...Loading</div>}
-        {!loading && (
-          <>
-            <SummaryDataTable data={data}  />
-          </>
-        )}
-      </div>
-    );
+  async function getSummary() {
+    const url = process.env.REACT_APP_FN_BASE;
+    const code = process.env.REACT_APP_FN_SUMMARY_CODE;
+    const response = await fetch(`${url}/sum?code=${code}`);
+    const json = await response.json();
+    return json;
   }
-  
-  export default Summary;
-  
+
+
+function useSummary(){
+  return useQuery({
+    queryKey: ["Summary"],
+    queryFn: getSummary
+  })
+  }
+
+  return (
+    <ErrorBoundary
+    FallbackComponent={ErrorFallback}
+    onReset={() => {
+      // reset the state of your app so the error doesn't happen again
+    }}
+  >
+    <div className="App">
+    {status === "loading" ? (
+          "Loading..."
+        ) : status === "error" ? (
+          <span>Error: {(error as Error).message}</span>
+        ) : (
+        <>
+        { (data ) &&
+          <SummaryDataTable data={data} />
+        }
+        {
+          (!data && <>No data found</>)
+        }
+        </>
+      )}
+     <div>{isFetching ? "Background Updating..." : " "}</div>
+    </div>
+    </ErrorBoundary>
+  );
+}
+
+export default Summary;

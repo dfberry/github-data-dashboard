@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import "./App.css";
 import { useSearchParams } from "react-router-dom";
 import DataTableRepos from "./RepoDataTable";
@@ -6,39 +6,24 @@ import DataTableRepos from "./RepoDataTable";
 const url = process.env.REACT_APP_FN_BASE;
 const code = process.env.REACT_APP_FN_REPO_CODE;
 
-/*
-
-<form className='d-flex' role='search'>
-                <input
-                  className='form-control me-2'
-                  type='search'
-                  placeholder='Search'
-                  aria-label='Search'
-                />
-                <button className='btn btn-outline-success' type='submit'>
-                  Search
-                </button>
-              </form>
-*/
-
 function Repo(): JSX.Element {
+  
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
-  const name = searchParams.get("name");
-  const [data, setData] = useState([]);
+  const [repo, setRepo] = useState({});
+  const name = searchParams.get("name") || "";
 
   useEffect(() => {
-    fetch(`${url}/repo?name=${name}&code=${code}`, {
-      method: "GET",
-      redirect: "follow",
-    })
-      .then((response) => response.json())
-      // 4. Setting *dogImage* to the image url that we received from the response above
-      .then((data) => {
-        setLoading(false);
-        setData(data);
-      })
-      .catch((err) => console.log(err.message));
+
+    async function getData() {
+      const response = await fetch(`${url}/repo?name=${name}&code=${code}`);
+      const json = await response.json();
+      setLoading(false);
+      setRepo(json);
+      return json;
+    }
+
+    getData();
   }, [name]);
 
   return (
@@ -46,7 +31,7 @@ function Repo(): JSX.Element {
       {loading && <div>...Loading</div>}
       {!loading && (
         <>
-          <DataTableRepos data={data} name={name} />
+          <DataTableRepos data={repo} name={name} />
         </>
       )}
     </div>
