@@ -1,5 +1,5 @@
 // @ts-nocheck
-
+import { Link } from "react-router-dom";
 import { useTable, useSortBy } from "react-table";
 import styled from "styled-components";
 
@@ -100,6 +100,13 @@ function Table({ columns, data }: any) {
           {
             Header: "Repo",
             accessor: "repositoryName",
+            Cell: (row: any) => {
+              //console.log(row.cell.value);
+              const repoName = row.cell.value;
+              if (!repoName) return "";
+              const url = `/repo?name=${repoName}`;
+              return (<Link to={url} >{repoName}</Link>)
+            }
           },
   
           {

@@ -1,5 +1,6 @@
 import { useTable } from "react-table";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Styles = styled.div`
   padding: 1rem;
@@ -64,10 +65,10 @@ function Table({ columns, data }: any) {
 
   function DataTableRepos({data, name}:any): JSX.Element{
 
-    const columns = [
-      {
-        Header: name,
-        columns: [
+    const url = `https://github.com/Azure-Samples/${name}`;
+
+
+    const columns =  [
           {
             Header: "#",
             id: 'rowNumber',
@@ -81,7 +82,9 @@ function Table({ columns, data }: any) {
             accessor: "forks",
           },
           {
-            Header: "Date",
+            Header: ()=>{
+              return (<a href={url} target='_blank' rel="noreferrer">{name}</a>)
+            },
             accessor: "customDateUploaded",
             Cell: (row: any) => {
               //console.log(row.cell.value);
@@ -98,8 +101,6 @@ function Table({ columns, data }: any) {
             Header: "PRs",
             accessor: "pr",
           }
-        ],
-      },
     ];
 
     return (
