@@ -1,40 +1,59 @@
-import { useState, useEffect} from "react";
+import { useQuery } from "react-query";
 import "./App.css";
 import { useSearchParams } from "react-router-dom";
 import DataTableRepos from "./RepoDataTable";
+import { ErrorBoundary } from "react-error-boundary";
 
-const url = process.env.REACT_APP_FN_BASE;
-const code = process.env.REACT_APP_FN_REPO_CODE;
+function ErrorFallback({ error, resetErrorBoundary }: any) {
+  return (
+    <div role="alert">
+      <p>Something went wrong:</p>
+      <pre>{error.message}</pre>
+      <button onClick={resetErrorBoundary}>Try again</button>
+    </div>
+  );
+}
 
 function Repo(): JSX.Element {
-  
-  const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
-  const [repo, setRepo] = useState({});
   const name = searchParams.get("name") || "";
+  const { status, data, error, isFetching } = useRepo(name);
 
-  useEffect(() => {
-
-    async function getData() {
-      const response = await fetch(`${url}/repo?name=${name}&code=${code}`);
-      const json = await response.json();
-      setLoading(false);
-      setRepo(json);
-      return json;
-    }
-
-    getData();
-  }, [name]);
+  async function getData() {
+    const url = process.env.REACT_APP_FN_BASE;
+    const code = process.env.REACT_APP_FN_REPO_CODE;
+    const response = await fetch(`${url}/repo?name=${name}&code=${code}`);
+    const json = await response.json();
+    return json;
+  }
+  function useRepo(name: string) {
+    return useQuery({
+      queryKey: ["Repo", name],
+      queryFn: getData,
+    });
+  }
 
   return (
-    <div className="App">
-      {loading && <div>...Loading</div>}
-      {!loading && (
-        <>
-          <DataTableRepos data={repo} name={name} />
-        </>
-      )}
-    </div>
+    <ErrorBoundary
+      FallbackComponent={ErrorFallback}
+      onReset={() => {
+        // reset the state of your app so the error doesn't happen again
+      }}
+    >
+      <div className="App">
+        {status === "loading" ? (
+          "Loading..."
+        ) : status === "error" ? (
+          <span>Error: {(error as Error).message}</span>
+        ) : (
+          <>
+            {data && <DataTableRepos data={data} name={name} />}
+            {!data && <>No data found</>}
+          </>
+        )}
+        <div>{isFetching ? "Background Updating..." : " "}</div>
+      </div>
+    </ErrorBoundary>
   );
 }
 
