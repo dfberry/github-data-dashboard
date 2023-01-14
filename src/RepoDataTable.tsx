@@ -93,11 +93,17 @@ function Table({ columns, data }: any) {
             },
           },
           {
-            Header: "Issues",
+            Header: ()=>{              
+              const prUrl = `https://github.com/Azure-Samples/${name}/issues`
+            return (<a href={prUrl} target='_blank' rel="noreferrer">Issues</a>)
+            },
             accessor: "issues",
           },
           {
-            Header: "PRs",
+            Header: ()=>{
+              const prUrl = `https://github.com/Azure-Samples/${name}/pulls`
+              return (<a href={prUrl} target='_blank' rel="noreferrer">PRs</a>)
+            },
             accessor: "pr",
           }
     ];
