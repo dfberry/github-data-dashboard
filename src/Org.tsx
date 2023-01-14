@@ -20,10 +20,10 @@ function Org(): JSX.Element {
     const base = process.env.REACT_APP_FN_BASE;
     const code = process.env.REACT_APP_FN_ORG_CODE;
     const url = `${base}/org?code=${code}`;
-    console.log(url);
+
     const response = await fetch(url);
     const json = await response.json();
-    console.log("data fetched");
+
     return { org: json, date: json[0]?.customDateUploaded.slice(0, 10) };
   }
 

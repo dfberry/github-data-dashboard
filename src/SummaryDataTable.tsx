@@ -81,7 +81,7 @@ function SummaryDataTable({ data }: any): JSX.Element {
           Header: "Date",
           accessor: "date",
           Cell: (row: any) => {
-            //console.log(row.cell.value);
+
             const currentDate = row.cell.value;
             if (!currentDate) return "";
             return currentDate.slice(0, 10);

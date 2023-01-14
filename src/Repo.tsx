@@ -17,18 +17,27 @@ function ErrorFallback({ error, resetErrorBoundary }: any) {
 function Repo(): JSX.Element {
   const [searchParams] = useSearchParams();
   const name = searchParams.get("name") || "";
-  const { status, data, error, isFetching } = useRepo(name);
+  const { status, data, error, isFetching } = useRepo(searchParams.get("name") || "");
 
   async function getData() {
-    const url = process.env.REACT_APP_FN_BASE;
+    const urlBase = process.env.REACT_APP_FN_BASE;
     const code = process.env.REACT_APP_FN_REPO_CODE;
-    const response = await fetch(`${url}/repo?name=${name}&code=${code}`);
+
+    if(!!urlBase===false) throw Error ("Repo: urlBase is empty");
+    if(!!code===false) throw Error("Repo: code is empty");
+
+    const url = `${urlBase}/repo?name=${name}&code=${code}`;
+
+    const response = await fetch(url);
     const json = await response.json();
     return json;
   }
-  function useRepo(name: string) {
+  function useRepo(repoName: string) {
+ 
+    if(!!repoName===false) throw Error("Repo::useRepo repoName is empty");
+
     return useQuery({
-      queryKey: ["Repo", name],
+      queryKey: ["Repo", repoName],
       queryFn: getData,
     });
   }

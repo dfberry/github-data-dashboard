@@ -101,7 +101,7 @@ function Table({ columns, data }: any) {
             Header: "Repo",
             accessor: "repositoryName",
             Cell: (row: any) => {
-              //console.log(row.cell.value);
+
               const repoName = row.cell.value;
               if (!repoName) return "";
               const url = `/repo?name=${repoName}`;

@@ -86,7 +86,7 @@ function Table({ columns, data }: any) {
             },
             accessor: "customDateUploaded",
             Cell: (row: any) => {
-              //console.log(row.cell.value);
+
               const currentDate = row.cell.value;
               if (!currentDate) return "";
               return currentDate.slice(0, 10);
