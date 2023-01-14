@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import "./App.css";
 import { useSearchParams } from "react-router-dom";
 import DataTableRepos from "./RepoDataTable";
+import RepoIssuesAndPrsDataTable from './RepoIssuesAndPrsDataTable';
 import { ErrorBoundary } from "react-error-boundary";
 
 function ErrorFallback({ error, resetErrorBoundary }: any) {
@@ -56,11 +57,15 @@ function Repo(): JSX.Element {
           <span>Error: {(error as Error).message}</span>
         ) : (
           <>
+            { data?.issuesAndPrs && 
+              <RepoIssuesAndPrsDataTable data={data.issuesAndPrs} />
+            }
             {data && <DataTableRepos data={data} name={name} />}
             {!data && <>No data found</>}
           </>
         )}
         <div>{isFetching ? "Background Updating..." : " "}</div>
+
       </div>
     </ErrorBoundary>
   );
