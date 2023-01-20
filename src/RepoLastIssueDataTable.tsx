@@ -1,15 +1,12 @@
-// @ts-nocheck
-import { Link } from "react-router-dom";
-import { useTable, useSortBy } from "react-table";
+import { useTable } from "react-table";
 import styled from "styled-components";
+import { useSearchParams } from "react-router-dom";
 
 const Styles = styled.div`
   padding: 1rem;
-
   table {
     border-spacing: 0;
     border: 1px solid black;
-
     tr {
       :last-child {
         td {
@@ -17,14 +14,12 @@ const Styles = styled.div`
         }
       }
     }
-
     th,
     td {
       margin: 0;
       padding: 0.5rem;
       border-bottom: 1px solid black;
       border-right: 1px solid black;
-
       :last-child {
         border-right: 0;
       }
@@ -37,8 +32,7 @@ function Table({ columns, data }: any) {
       useTable({
         columns,
         data,
-      },
-      useSortBy);
+      });
   
     // Render the UI for your table
     return (
@@ -47,17 +41,7 @@ function Table({ columns, data }: any) {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>{
-                  column.render("Header")
-                  }
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? ' 🔽'
-                        : ' 🔼'
-                      : ''}
-                  </span>
-                  </th>
+                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
               ))}
             </tr>
           ))}
@@ -77,50 +61,44 @@ function Table({ columns, data }: any) {
       </table>
     );
   }
- 
-  function DataTableOrg({data, collectionDate}:any): JSX.Element{
 
 
-    const columns = [
-      {
-        Header: `${collectionDate} - ${data.length} repos`,
-        columns: [
+  function LastIssueDataTable({data}:any): JSX.Element{
+
+    const columns =  [
           {
             Header: "#",
             id: 'rowNumber',
           },
           {
-            Header: "Stars",
-            accessor: "stars",
-          },
-          {
-            Header: "Forks",
-            accessor: "forks",
-          },
-          {
-            Header: "Repo",
-            accessor: "repositoryName",
+            Header: "Created data",
+            accessor: "createdAt",
             Cell: (row: any) => {
 
-              const repoName = row.cell.value;
-              if (!repoName) return "";
-              const url = `/repo?name=${repoName}&owner=${'Azure-samples'}`;
-              return (<Link to={url} >{repoName}</Link>)
-            }
-          },
-  
-          {
-            Header: "Issues",
-            accessor: "issues",
+              const currentDate = row.cell.value;
+              if (!currentDate) return "";
+              return currentDate.slice(0, 10);
+            },
           },
           {
-            Header: "PRs",
-            accessor: "pr",
+            Header: "Closed date",
+            accessor: "closedAt",
+            Cell: (row: any) => {
+
+              const currentDate = row.cell.value;
+              if (!currentDate) return "";
+              return currentDate.slice(0, 10);
+            },
           },
-        ],
-      },
+          {
+            Header: "Last issue",
+            accessor: "title"
+          },
+          {
+            Header: "State",
+            accessor: "state",
+          }
     ];
-  
 
     return (
           <Styles>
@@ -129,4 +107,4 @@ function Table({ columns, data }: any) {
       );
   }
 
-  export default DataTableOrg;
+  export default LastIssueDataTable;

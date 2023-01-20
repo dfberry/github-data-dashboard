@@ -62,9 +62,9 @@ function Table({ columns, data }: any) {
   }
 
 
-  function DataTableRepos({data, name}:any): JSX.Element{
+  function DataTableRepos({data, name, owner}:any): JSX.Element{
 
-    const url = `https://github.com/Azure-Samples/${name}`;
+    const url = `https://github.com/${owner}/${name}`;
 
 
     const columns =  [
@@ -94,14 +94,14 @@ function Table({ columns, data }: any) {
           },
           {
             Header: ()=>{              
-              const prUrl = `https://github.com/Azure-Samples/${name}/issues`
+              const prUrl = `https://github.com/${owner}/${name}/issues`
             return (<a href={prUrl} target='_blank' rel="noreferrer">Issues</a>)
             },
             accessor: "issues",
           },
           {
             Header: ()=>{
-              const prUrl = `https://github.com/Azure-Samples/${name}/pulls`
+              const prUrl = `https://github.com/${owner}/${name}/pulls`
               return (<a href={prUrl} target='_blank' rel="noreferrer">PRs</a>)
             },
             accessor: "pr",

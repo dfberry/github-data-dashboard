@@ -1,8 +1,9 @@
 import { useQuery } from "react-query";
 import "./App.css";
 import { useSearchParams } from "react-router-dom";
-import DataTableRepos from "./RepoDataTable";
-import RepoLast from "./RepoLast";
+import LastIssueDataTable from "./RepoLastIssueDataTable";
+import LastPrDataTable from "./RepoLastPrDataTable";
+import LastCommitDataTable from "./RepoLastCommitDataTable";
 import { ErrorBoundary } from "react-error-boundary";
 
 function ErrorFallback({ error, resetErrorBoundary }: any) {
@@ -15,32 +16,40 @@ function ErrorFallback({ error, resetErrorBoundary }: any) {
   );
 }
 
-function Repo(): JSX.Element {
+function RepoLast(): JSX.Element {
   const [searchParams] = useSearchParams();
-  const owner = searchParams.get("owner") || "";
   const name = searchParams.get("name") || "";
-  const { status, data, error, isFetching } = useRepo(
-    searchParams.get("name") || ""
+  const owner = searchParams.get("owner") || "";
+
+  console.log(`name: ${name}`);
+  console.log(`owner: ${owner}`);
+
+  const { status, data, error, isFetching } = useRepoLast(
+    searchParams.get("name") || "",
+    searchParams.get("owner") || ""
   );
 
   async function getData() {
     const urlBase = process.env.REACT_APP_FN_BASE;
-    const code = process.env.REACT_APP_FN_REPO_CODE;
+    const code = process.env.REACT_APP_FN_LAST_CODE;
 
     if (!!urlBase === false) throw Error("Repo: urlBase is empty");
     if (!!code === false) throw Error("Repo: code is empty");
 
-    const url = `${urlBase}/repo?name=${name}&code=${code}`;
+    const url = `${urlBase}/last?repo=${name}&owner=${owner}&code=${code}`;
+    console.log(`url: ${url}`)
 
     const response = await fetch(url);
     const json = await response.json();
+    console.log(`json: ${JSON.stringify(json)}`);
     return json;
   }
-  function useRepo(repoName: string) {
-    if (!!repoName === false) throw Error("Repo::useRepo repoName is empty");
+  function useRepoLast(repoName: string, owner: string) {
+    if (!!repoName === false) throw Error("RepoLast::useRepo repoName is empty");
+    if (!!owner === false) throw Error("RepoLast::useRepo owner is empty");
 
     return useQuery({
-      queryKey: ["Repo", repoName],
+      queryKey: ["RepoLast", repoName, owner],
       queryFn: getData,
     });
   }
@@ -59,10 +68,13 @@ function Repo(): JSX.Element {
           <span>Error: {(error as Error).message}</span>
         ) : (
           <>
-            {name && owner && (
-              <RepoLast />
+
+            {data?.lastIssue && (
+              <LastIssueDataTable data={[data?.lastIssue]} name={name} />
             )}
-            {data && <DataTableRepos data={data} name={name} owner={owner} />}
+            {data?.lastCommit && (
+              <LastCommitDataTable data={[data?.lastCommit]} name={name} />
+            )}
             {!data && <>No data found</>}
           </>
         )}
@@ -72,4 +84,4 @@ function Repo(): JSX.Element {
   );
 }
 
-export default Repo;
+export default RepoLast;

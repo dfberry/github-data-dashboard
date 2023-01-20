@@ -62,7 +62,7 @@ function Table({ columns, data }: any) {
   }
 
 
-  function DataTableRepos({data}:any): JSX.Element{
+  function LastPrDataTable({data}:any): JSX.Element{
 
     const columns =  [
           {
@@ -70,20 +70,8 @@ function Table({ columns, data }: any) {
             id: 'rowNumber',
           },
           {
-            Header: "Last issue",
-            accessor: "issueNumber",
-          },
-          {
-            Header: "State",
-            accessor: "state",
-          },
-          {
-            Header: "Created",
-            accessor: "createdAt",
-          },
-          {
-            Header: "Closed",
-            accessor: "closedAt",
+            Header: "Last PR",
+            accessor: "associatedPullRequests.nodes[0].number",
           }
     ];
 
@@ -94,4 +82,4 @@ function Table({ columns, data }: any) {
       );
   }
 
-  export default DataTableRepos;
+  export default LastPrDataTable;
