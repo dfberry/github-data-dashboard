@@ -1,6 +1,5 @@
 import { useTable } from "react-table";
 import styled from "styled-components";
-import { useSearchParams } from "react-router-dom";
 
 const Styles = styled.div`
   padding: 1rem;

@@ -2,7 +2,6 @@ import { useQuery } from "react-query";
 import "./App.css";
 import { useSearchParams } from "react-router-dom";
 import LastIssueDataTable from "./RepoLastIssueDataTable";
-import LastPrDataTable from "./RepoLastPrDataTable";
 import LastCommitDataTable from "./RepoLastCommitDataTable";
 import { ErrorBoundary } from "react-error-boundary";
 
