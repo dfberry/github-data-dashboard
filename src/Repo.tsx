@@ -55,10 +55,13 @@ function Repo(): JSX.Element {
     const json = await response.json();
 
     json.map((item: any) => {
-      const newDate = item.date.slice(0, 10);
-      console.log(newDate);
-      item.date = newDate;
+      if(item && item.customDateUploaded && item.customDateUploaded.length>10){
+        const newDate = item.customDateUploaded.slice(0, 10);
+        item.date = newDate;
+        return item;
+      }
       return item;
+
     });
 
     // const ascSort = json.sort(compareASC);
