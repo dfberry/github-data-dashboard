@@ -1,12 +1,9 @@
-
-import { useQuery} from "react-query";
+import { useQuery } from "react-query";
 import SummaryChart from "./Charts/SummaryChart";
 import { ErrorBoundary } from "react-error-boundary";
-import { useState, useMemo } from 'react';
-import {timeSeriesItem} from './Models/timeSeries';
-import {compareASC, compareDESC, clean50} from './utilities/compare';
+import { useMemo } from "react";
+import { compareASC, compareDESC, clean50 } from "./utilities/compare";
 import SummaryDataTable from "./Tables/SummaryDataTable";
-
 
 function ErrorFallback({ error, resetErrorBoundary }: any) {
   return (
@@ -18,27 +15,55 @@ function ErrorFallback({ error, resetErrorBoundary }: any) {
   );
 }
 
-type IDataRow ={
-  date: string,
-  count: string
-}
+type IDataRow = {
+  date: string;
+  count: string;
+};
 
-type IData ={
-  summaryText: string
-  raw: IDataRow[]
-}
+type IData = {
+  summaryText: string;
+  raw: IDataRow[];
+};
 
-function sortDataAsc(data: IData|undefined){
-  return (data !== null && data !== undefined && data.raw && data.raw.length>0) ? data.raw.sort(compareASC):[];
+function sortDataAsc(data: IData | undefined) {
+  if (
+    data !== null &&
+    data !== undefined &&
+    data.raw &&
+    Array.isArray(data.raw) &&
+    data.raw.length > 0
+  ) {
+    const rawData = JSON.parse(JSON.stringify(data.raw));
+    return rawData.sort(compareASC);
+  } else {
+    return [];
+  }
 }
-function sortDataDesc(data: IData|undefined){
-  return (data !== null && data !== undefined && data.raw && data.raw.length>0) ? data.raw.sort(compareDESC):[];
+function sortDataDesc(data: IData | undefined) {
+  if (
+    data !== null &&
+    data !== undefined &&
+    data.raw &&
+    Array.isArray(data.raw) &&
+    data.raw.length > 0
+  ) {
+    const rawData = JSON.parse(JSON.stringify(data.raw));
+    return rawData.sort(compareDESC);
+  } else {
+    return [];
+  }
 }
 
 function Summary(): JSX.Element {
   const { status, data, error, isFetching } = useSummary();
-  const graphData: IDataRow[] = useMemo<IDataRow[]>(() => sortDataAsc(data), [data]); 
-  const tableData: IDataRow[] = useMemo<IDataRow[]>(() => sortDataDesc(data), [data]); 
+  const graphData: IDataRow[] = useMemo<IDataRow[]>(
+    () => sortDataAsc(data),
+    [data]
+  );
+  const tableData: IDataRow[] = useMemo<IDataRow[]>(
+    () => sortDataDesc(data),
+    [data]
+  );
 
   async function getSummary() {
     const url = process.env.REACT_APP_FN_BASE;
@@ -53,23 +78,25 @@ function Summary(): JSX.Element {
       return item;
     });
 
-    const arrangedData =  {
+    const arrangedData = {
       summaryText: `Last scrape on ${json[0]?.date} with ${json[0]?.count} repos.`,
-      raw: clean50(json)
-    }
+      raw: clean50(json),
+    };
     return arrangedData;
   }
 
   function useSummary() {
-    return useQuery({
-      queryKey: ["Summary"],
-      queryFn: getSummary,
-    }
-    // , {
-    //   onError: (error) => {
-    //       console.log(error);
-    //   }});
-  )}
+    return useQuery(
+      {
+        queryKey: ["Summary"],
+        queryFn: getSummary,
+      }
+      // , {
+      //   onError: (error) => {
+      //       console.log(error);
+      //   }});
+    );
+  }
 
   return (
     <ErrorBoundary
@@ -85,21 +112,18 @@ function Summary(): JSX.Element {
           <span>Error: {(error as Error).message}</span>
         ) : (
           <>
-            
-            {data && 
-            <>
-            <p>{data.summaryText}</p>
-            <SummaryChart data={graphData} />
-            <SummaryDataTable data={tableData.slice(0, 30)} />
-            
-            </>
-            }
+            {data && (
+              <>
+                <p>{data.summaryText}</p>
+                <SummaryChart data={graphData} />
+                <SummaryDataTable data={tableData.slice(0, 30)} />
+              </>
+            )}
             {!data && <>No data found</>}
           </>
         )}
         <div>{isFetching ? "Background Updating..." : " "}</div>
       </div>
-      
     </ErrorBoundary>
   );
 }
