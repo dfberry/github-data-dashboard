@@ -1,9 +1,20 @@
 import { useQuery } from "react-query";
 import "./App.css";
+//import { useState } from 'react';
 import { useSearchParams } from "react-router-dom";
 import DataTableRepos from "./RepoDataTable";
 import RepoLast from "./RepoLast";
 import { ErrorBoundary } from "react-error-boundary";
+//import {timeSeriesItem} from './Models/timeSeries';
+//import {compareASC} from './utilities/compare';
+
+type RepoItem = {
+  forks: number;
+  issues: number;
+  customDateUploaded: Date;
+  stars: number
+  pr: number;
+}
 
 function ErrorFallback({ error, resetErrorBoundary }: any) {
   return (
@@ -19,11 +30,19 @@ function Repo(): JSX.Element {
   const [searchParams] = useSearchParams();
   const owner = searchParams.get("owner") || "";
   const name = searchParams.get("name") || "";
+
+  // const [issues, setIssues] = useState<timeSeriesItem[]>();
+  // const [prs, setPrs] = useState<timeSeriesItem[]>();
+  // const [starts, setStars] = useState<timeSeriesItem[]>();
+  // const [forks, setForks] = useState<timeSeriesItem[]>();
+
+
+
   const { status, data, error, isFetching } = useRepo(
     searchParams.get("name") || ""
   );
 
-  async function getData() {
+  async function getData():Promise<RepoItem[]> {
     const urlBase = process.env.REACT_APP_FN_BASE;
     const code = process.env.REACT_APP_FN_REPO_CODE;
 
@@ -34,6 +53,19 @@ function Repo(): JSX.Element {
 
     const response = await fetch(url);
     const json = await response.json();
+
+    json.map((item: any) => {
+      const newDate = item.date.slice(0, 10);
+      console.log(newDate);
+      item.date = newDate;
+      return item;
+    });
+
+    // const ascSort = json.sort(compareASC);
+
+
+
+
     return json;
   }
   function useRepo(repoName: string) {

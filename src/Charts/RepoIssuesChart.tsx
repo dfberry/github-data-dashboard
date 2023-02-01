@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   LineChart,
   Line,
@@ -10,12 +9,8 @@ import {
   AreaChart,
   Area,
 } from "recharts";
-import {compareASC} from '../utilities/compare';
-const SummaryChart = ({ data }: any) => {
 
-  const [chartData, _ ] = useState(data.sort(compareASC))
-
-  console.log(JSON.stringify(chartData));
+const RepoIssuesChart = ({ data }: any) => {
 
   return (
     <>
@@ -24,7 +19,7 @@ const SummaryChart = ({ data }: any) => {
         <LineChart
           width={600}
           height={400}
-          data={chartData}
+          data={data}
           margin={{ top: 40, right: 40, bottom: 20, left: 20 }}
         >
           <CartesianGrid vertical={false} />
@@ -39,7 +34,7 @@ const SummaryChart = ({ data }: any) => {
             labelStyle={{ fontWeight: "bold", color: "#666666" }}
           />
           <Line dataKey="count" stroke="#ff7300" dot={false} />
-          <Brush dataKey="date" startIndex={chartData.length - 40}>
+          <Brush dataKey="date" startIndex={data.length - 40}>
             <AreaChart>
               <CartesianGrid />
               <YAxis hide domain={["auto", "auto"]} />
@@ -57,4 +52,4 @@ const SummaryChart = ({ data }: any) => {
   );
 };
 
-export default SummaryChart;
+export default RepoIssuesChart;

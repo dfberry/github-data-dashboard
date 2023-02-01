@@ -1,12 +1,12 @@
-import { useQuery } from "react-query";
+
+import { useQuery} from "react-query";
 import SummaryChart from "./Charts/SummaryChart";
 import { ErrorBoundary } from "react-error-boundary";
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import {timeSeriesItem} from './Models/timeSeries';
+import {compareASC, compareDESC, clean50} from './utilities/compare';
+import SummaryDataTable from "./Tables/SummaryDataTable";
 
-type ScrapeTimeSeriesItem = {
-  date: string;
-  count: number;
-}
 
 function ErrorFallback({ error, resetErrorBoundary }: any) {
   return (
@@ -17,15 +17,28 @@ function ErrorFallback({ error, resetErrorBoundary }: any) {
     </div>
   );
 }
-function compareASC(a: any, b: any): any {
-  if (a.date === b.date) return 0;
-  return a < b ? 1 : -1;
+
+type IDataRow ={
+  date: string,
+  count: string
 }
+
+type IData ={
+  summaryText: string
+  raw: IDataRow[]
+}
+
+function sortDataAsc(data: IData|undefined){
+  return (data !== null && data !== undefined && data.raw && data.raw.length>0) ? data.raw.sort(compareASC):[];
+}
+function sortDataDesc(data: IData|undefined){
+  return (data !== null && data !== undefined && data.raw && data.raw.length>0) ? data.raw.sort(compareDESC):[];
+}
+
 function Summary(): JSX.Element {
   const { status, data, error, isFetching } = useSummary();
-
-  const [lastScrape, setLastScrape] = useState<ScrapeTimeSeriesItem>()
-  const [timeSeries, setTimeSeries ] = useState<ScrapeTimeSeriesItem[]>([]);
+  const graphData: IDataRow[] = useMemo<IDataRow[]>(() => sortDataAsc(data), [data]); 
+  const tableData: IDataRow[] = useMemo<IDataRow[]>(() => sortDataDesc(data), [data]); 
 
   async function getSummary() {
     const url = process.env.REACT_APP_FN_BASE;
@@ -33,24 +46,30 @@ function Summary(): JSX.Element {
     const response = await fetch(`${url}/sum?code=${code}`);
     let json = await response.json();
 
-    setLastScrape(json[0]);
-
+    // From full date to readable data
     json.map((item: any) => {
       const newDate = item.date.slice(0, 10);
-      console.log(newDate);
       item.date = newDate;
       return item;
     });
-    setTimeSeries(json.sort(compareASC));
-    return json;
+
+    const arrangedData =  {
+      summaryText: `Last scrape on ${json[0]?.date} with ${json[0]?.count} repos.`,
+      raw: clean50(json)
+    }
+    return arrangedData;
   }
 
   function useSummary() {
     return useQuery({
       queryKey: ["Summary"],
       queryFn: getSummary,
-    });
-  }
+    }
+    // , {
+    //   onError: (error) => {
+    //       console.log(error);
+    //   }});
+  )}
 
   return (
     <ErrorBoundary
@@ -66,13 +85,21 @@ function Summary(): JSX.Element {
           <span>Error: {(error as Error).message}</span>
         ) : (
           <>
-            {data && <>Last scrape on {lastScrape?.date} with ${lastScrape?.count} repos.</>}
+            
+            {data && 
+            <>
+            <p>{data.summaryText}</p>
+            <SummaryChart data={graphData} />
+            <SummaryDataTable data={tableData.slice(0, 30)} />
+            
+            </>
+            }
             {!data && <>No data found</>}
           </>
         )}
         <div>{isFetching ? "Background Updating..." : " "}</div>
       </div>
-      <SummaryChart data={timeSeries} />
+      
     </ErrorBoundary>
   );
 }
