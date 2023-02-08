@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import "./App.css";
 //import { useState } from 'react';
 import { useSearchParams } from "react-router-dom";
-import DataTableRepos from "./RepoDataTable";
+import DataTableRepos from "./Tables/RepoDataTable";
 import RepoLast from "./RepoLast";
 import { ErrorBoundary } from "react-error-boundary";
 //import {timeSeriesItem} from './Models/timeSeries';

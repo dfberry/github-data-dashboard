@@ -1,5 +1,14 @@
 import React from "react";
 
+// Date 
+export function shortDate(date){
+  if(date && date.length>10){
+    return date.slice(0,10)
+  } else {
+    return date;
+  }
+}
+
 // text search input
 export function TextSearchFilter({
   column: { filterValue, preFilteredRows, setFilter }

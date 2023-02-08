@@ -3,9 +3,10 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useTable, useSortBy, useFilters } from "react-table";
 import styled from "styled-components";
+import { shortDate } from "../utilities/filters"
 
 // filters
-import { TextSearchFilter } from "./utilities/filters";
+import { TextSearchFilter } from "../utilities/filters";
 
 const Styles = styled.div`
   padding: 1rem;
@@ -36,15 +37,13 @@ const Styles = styled.div`
   }
 `;
 function Table({ columns, data }: any) {
-
   const defaultColumn = useMemo(
     () => ({
       // Let's set up our default Filter UI
-      Filter: ""
+      Filter: "",
     }),
     []
   );
-
 
   // Use the state and functions returned from useTable to build your UI
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -56,7 +55,6 @@ function Table({ columns, data }: any) {
       },
       useFilters,
       useSortBy
-
     );
 
   // Render the UI for your table
@@ -101,6 +99,7 @@ function Table({ columns, data }: any) {
 }
 
 function DataTableOrg({ data, collectionDate }: any): JSX.Element {
+  
   const columns = [
     {
       Header: `${collectionDate} - ${data.length} repos`,
@@ -108,6 +107,10 @@ function DataTableOrg({ data, collectionDate }: any): JSX.Element {
         {
           Header: "#",
           id: "rowNumber",
+        },
+        {
+          Header: "Watchers",
+          accessor: "watchers",
         },
         {
           Header: "Stars",
@@ -128,7 +131,14 @@ function DataTableOrg({ data, collectionDate }: any): JSX.Element {
             return <Link to={url}>{repoName}</Link>;
           },
         },
-
+        {
+          Header: "License",
+          accessor: "legal.license",
+        },
+        {
+          Header: "Disk usage",
+          accessor: "diskUsage",
+        },
         {
           Header: "Issues",
           accessor: "issues",
@@ -137,6 +147,45 @@ function DataTableOrg({ data, collectionDate }: any): JSX.Element {
           Header: "PRs",
           accessor: "pr",
         },
+        {
+          Header: "Template",
+          accessor: d => { return d?.is?.isTemplate.toString()}
+        },
+        // TBD - doesn't work with personal GitHub account
+        // {
+        //   Header: "Private",
+        //   accessor: d => { return d?.is?.isPrivate.toString()}  
+        // },
+
+        {
+          Header: "Archived",
+          accessor: d => { return d?.is?.isArchived.toString()}
+        },
+        // {
+        //   Header: "Disabled",
+        //   accessor: d => { return d?.is?.isDisabled.toString()}
+        // },
+        {
+          Header: "Created",
+          accessor: "date.createdAt",  
+          Cell: (row: any) => {
+            const date = row.cell.value;
+            if (!date) return "";
+            const newDate = `${shortDate(date)}`;
+            return newDate;
+          },       
+        }
+        ,
+        {
+          Header: "Last push",
+          accessor: "lastPushToDefaultBranch",  
+          Cell: (row: any) => {
+            const date = row.cell.value;
+            if (!date) return "";
+            const newDate = `${shortDate(date?.pushedDate)}`;
+            return newDate;
+          },         
+        }
       ],
     },
   ];

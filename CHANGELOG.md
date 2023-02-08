@@ -1,3 +1,8 @@
+## 0.2.1
+
+* Added extended properties to org table
+* moved table components into Tables dir
+
 ## 0.1.2 
 
 * Simplify summery

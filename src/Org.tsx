@@ -1,5 +1,5 @@
 import "./App.css";
-import DataTableOrg from "./OrgDataTable";
+import DataTableOrg from "./Tables/OrgDataTable";
 import { useQuery } from "react-query";
 import { ErrorBoundary } from "react-error-boundary";
 

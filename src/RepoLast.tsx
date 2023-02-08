@@ -1,8 +1,8 @@
 import { useQuery } from "react-query";
 import "./App.css";
 import { useSearchParams } from "react-router-dom";
-import LastIssueDataTable from "./RepoLastIssueDataTable";
-import LastCommitDataTable from "./RepoLastCommitDataTable";
+import LastIssueDataTable from "./Tables/RepoLastIssueDataTable";
+import LastCommitDataTable from "./Tables/RepoLastCommitDataTable";
 import { ErrorBoundary } from "react-error-boundary";
 
 function ErrorFallback({ error, resetErrorBoundary }: any) {
