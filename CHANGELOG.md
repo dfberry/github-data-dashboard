@@ -1,3 +1,7 @@
+## 0.2.2
+
+* Style for org table
+
 ## 0.2.1
 
 * Added extended properties to org table

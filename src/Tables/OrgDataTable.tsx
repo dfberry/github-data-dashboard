@@ -3,7 +3,8 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useTable, useSortBy, useFilters } from "react-table";
 import styled from "styled-components";
-import { shortDate } from "../utilities/filters"
+import { shortDate } from "../utilities/filters";
+import { isOneYearOldPlus } from "../utilities/compare";
 
 // filters
 import { TextSearchFilter } from "../utilities/filters";
@@ -99,7 +100,6 @@ function Table({ columns, data }: any) {
 }
 
 function DataTableOrg({ data, collectionDate }: any): JSX.Element {
-  
   const columns = [
     {
       Header: `${collectionDate} - ${data.length} repos`,
@@ -134,6 +134,14 @@ function DataTableOrg({ data, collectionDate }: any): JSX.Element {
         {
           Header: "License",
           accessor: "legal.license",
+          Cell: (row: any) => {
+            const license = row.cell.value;
+            if (!license) {
+              return <div className="ErrorBox">None</div>;
+            } else {
+              return license;
+            }
+          },
         },
         {
           Header: "Disk usage",
@@ -149,17 +157,32 @@ function DataTableOrg({ data, collectionDate }: any): JSX.Element {
         },
         {
           Header: "Template",
-          accessor: d => { return d?.is?.isTemplate.toString()}
+          accessor: (d) => {
+            return d?.is?.isTemplate.toString();
+          },
         },
         // TBD - doesn't work with personal GitHub account
         // {
         //   Header: "Private",
-        //   accessor: d => { return d?.is?.isPrivate.toString()}  
+        //   accessor: d => { return d?.is?.isPrivate.toString()}
         // },
 
         {
           Header: "Archived",
-          accessor: d => { return d?.is?.isArchived.toString()}
+          accessor: "is",
+
+//            return d?.is?.isArchived.toString();
+
+          Cell: (row: any) => {
+            const isArchived = row.cell.value?.isArchived || null;
+            if (!isArchived) return "";
+            
+            let archiveClass = "";
+            if (isArchived===true) {
+              archiveClass = "DisregardBox";
+            }
+            return <div className={archiveClass}>{isArchived.toString()}</div>;
+          },
         },
         // {
         //   Header: "Disabled",
@@ -167,25 +190,28 @@ function DataTableOrg({ data, collectionDate }: any): JSX.Element {
         // },
         {
           Header: "Created",
-          accessor: "date.createdAt",  
+          accessor: "date.createdAt",
           Cell: (row: any) => {
             const date = row.cell.value;
             if (!date) return "";
             const newDate = `${shortDate(date)}`;
             return newDate;
-          },       
-        }
-        ,
+          },
+        },
         {
           Header: "Last push",
-          accessor: "lastPushToDefaultBranch",  
+          accessor: "lastPushToDefaultBranch",
           Cell: (row: any) => {
             const date = row.cell.value;
-            if (!date) return "";
-            const newDate = `${shortDate(date?.pushedDate)}`;
-            return newDate;
-          },         
-        }
+            if (!date?.pushedDate) return "";
+            let lastPushClass = "";
+
+            if (isOneYearOldPlus(date?.pushedDate)) {
+              lastPushClass = "WarningBox";
+            }
+            return <div className={lastPushClass}>{date?.pushedDate}</div>;
+          },
+        },
       ],
     },
   ];

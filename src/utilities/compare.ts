@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export function compareASC (x: any, y:any):any {
   let a = x.date.toUpperCase(),
       b = y.date.toUpperCase();
@@ -50,3 +52,11 @@ const data = [
 console.table(data.sort(compareASC))
 console.table(data.sort(compareDESC))
 */
+
+export function isOneYearOldPlus(date:any){
+
+  const originalDate = moment(date);
+  const oneYearAgoToday = moment().subtract(1, 'year');
+  const isOlderThan1Year = moment(originalDate).isBefore(oneYearAgoToday)
+  return isOlderThan1Year;
+}

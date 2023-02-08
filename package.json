@@ -1,6 +1,6 @@
 {
   "name": "github-repo-dashboard",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "dependencies": {
     "@tanstack/react-query": "^4.20.9",
@@ -13,6 +13,7 @@
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",
     "@types/react-router-dom": "^5.3.3",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^3.1.4",

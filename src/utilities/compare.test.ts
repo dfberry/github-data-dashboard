@@ -1,5 +1,6 @@
-import { compareASC, compareDESC } from "./compare";
+import { compareASC, compareDESC, isOneYearOldPlus } from "./compare";
 import data from "../../data/summary.json";
+import moment from 'moment'
 
 describe("compare", () => {
   test("asc", () => {
@@ -11,5 +12,17 @@ describe("compare", () => {
     const newest = data.sort(compareDESC)[0];
     console.log(newest);
     expect(newest).toStrictEqual({ date: "2023-01-31", count: 2131 });
+  });
+    test("is older than 1 year", () => {
+    const twoYearsOld = moment().subtract(2, 'year');
+    const isOlderThan1Year = isOneYearOldPlus(twoYearsOld);
+
+    expect(isOlderThan1Year).toBe(true);
+  });
+    test("is not older than 1 year", () => {
+    const twoYearsOld = moment(); // now
+    const isOlderThan1Year = isOneYearOldPlus(twoYearsOld);
+
+    expect(isOlderThan1Year).toBe(false);
   });
 });

@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+.ErrorBox {
+  background-color: red;
+  color:white;
+}
+.WarningBox {
+  background-color: orange;
+  color:white;
+}
+.DisregardBox {
+  background-color: darkgrey;
+  color:white;
+}
