@@ -13,7 +13,7 @@ function ErrorFallback({ error, resetErrorBoundary }: any) {
   );
 }
 
-function Org(): JSX.Element {
+function Org({setDataSet}:any): JSX.Element {
   const { status, data, error, isFetching } = useOrg();
 
   async function getOrg() {
@@ -24,7 +24,9 @@ function Org(): JSX.Element {
     const response = await fetch(url);
     const json = await response.json();
 
-    return { org: json, date: json[0]?.customDateUploaded.slice(0, 10) };
+    const dataSet = { org: json, date: json[0]?.customDateUploaded.slice(0, 10) };
+    setDataSet(json);
+    return dataSet;
   }
 
   function useOrg() {
@@ -49,7 +51,7 @@ function Org(): JSX.Element {
         ) : (
           <>
             {data && (
-              <DataTableOrg data={data.org} collectionDate={data.date} />
+              <DataTableOrg data={data.org}  />
             )}
             {!data && <>No data found</>}
           </>

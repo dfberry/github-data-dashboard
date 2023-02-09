@@ -1,6 +1,7 @@
 ## 0.2.2
 
 * Style for org table
+* OrgMeta tables
 
 ## 0.2.1
 

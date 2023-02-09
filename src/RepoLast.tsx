@@ -20,9 +20,6 @@ function RepoLast(): JSX.Element {
   const name = searchParams.get("name") || "";
   const owner = searchParams.get("owner") || "";
 
-  console.log(`name: ${name}`);
-  console.log(`owner: ${owner}`);
-
   const { status, data, error, isFetching } = useRepoLast(
     searchParams.get("name") || "",
     searchParams.get("owner") || ""
@@ -36,11 +33,9 @@ function RepoLast(): JSX.Element {
     if (!!code === false) throw Error("Repo: code is empty");
 
     const url = `${urlBase}/last?repo=${name}&owner=${owner}&code=${code}`;
-    console.log(`url: ${url}`)
 
     const response = await fetch(url);
     const json = await response.json();
-    console.log(`json: ${JSON.stringify(json)}`);
     return json;
   }
   function useRepoLast(repoName: string, owner: string) {
