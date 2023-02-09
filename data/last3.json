@@ -1,0 +1,46 @@
+{
+  "lastIssue": {
+    "title": "Need prerequisite detail in readme",
+    "url": "https://github.com/Azure-Samples/azure-intelligent-edge-patterns/issues/1",
+    "issueNumber": 1,
+    "state": "OPEN",
+    "createdAt": "2019-06-24T20:47:27Z",
+    "closedAt": null,
+    "participants": [
+      {
+        "login": "JetstreamRoySprowl",
+        "name": "Roy Sprowl",
+        "url": "https://github.com/JetstreamRoySprowl"
+      }
+    ]
+  },
+  "lastCommit": {
+    "messageHeadline": "Merge pull request #391 from chrisdats/chrisdats-eflowdoc-update",
+    "oid": "e47397d5f78d6aaa93f8190df9898727188fe160",
+    "message": "Merge pull request #391 from chrisdats/chrisdats-eflowdoc-update\n\nUpdate Eflow.md",
+    "author": {
+      "name": "penorouzi",
+      "email": "74566745+penorouzi@users.noreply.github.com",
+      "date": "2022-03-20T16:02:37-04:00"
+    },
+    "status": null,
+    "authoredDate": "2022-03-20T20:02:37Z",
+    "pushedDate": "2022-03-20T20:02:39Z",
+    "committedDate": "2022-03-20T20:02:37Z"
+  },
+  "lastPr": {
+    "prsByBranch": [
+      {
+        "name": "yadavm_gpureference",
+        "associatedPullRequests": {
+          "nodes": [
+            {
+              "number": 53,
+              "url": "https://github.com/Azure-Samples/azure-intelligent-edge-patterns/pull/53"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

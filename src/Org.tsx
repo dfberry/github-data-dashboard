@@ -22,7 +22,11 @@ function Org({setDataSet}:any): JSX.Element {
     const url = `${base}/org?code=${code}`;
 
     const response = await fetch(url);
-    const json = await response.json();
+    const json = await response.json()
+
+    json.map((repo:any):any =>{
+      return repo.repositoryName = repo.repositoryName.toLowerCase()
+    })
 
     const dataSet = { org: json, date: json[0]?.customDateUploaded.slice(0, 10) };
     setDataSet(json);

@@ -102,7 +102,7 @@ function Table({ columns, data }: any) {
 function DataTableOrg({ data, collectionDate }: any): JSX.Element {
   const columns = [
     {
-      Header: `${collectionDate} - ${data.length} repos`,
+      Header: `Azure-samples - ${data.length} repos`,
       columns: [
         {
           Header: "#",
@@ -127,7 +127,7 @@ function DataTableOrg({ data, collectionDate }: any): JSX.Element {
           Cell: (row: any) => {
             const repoName = row.cell.value;
             if (!repoName) return "";
-            const url = `/repo?name=${repoName}&owner=${"Azure-samples"}`;
+            const url = `/repo?name=${repoName}&owner=azure-samples`;
             return <Link to={url}>{repoName}</Link>;
           },
         },
@@ -209,7 +209,7 @@ function DataTableOrg({ data, collectionDate }: any): JSX.Element {
             if (isOneYearOldPlus(date?.pushedDate)) {
               lastPushClass = "WarningBox";
             }
-            return <div className={lastPushClass}>{date?.pushedDate}</div>;
+            return <div className={lastPushClass}>{shortDate(date?.pushedDate)}</div>;
           },
         },
       ],

@@ -1,4 +1,4 @@
 export type IWeightedRepo = {
-    repositoryName: string
+    name: string
     weight: number
 }

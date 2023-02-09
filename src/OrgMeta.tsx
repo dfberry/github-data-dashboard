@@ -20,10 +20,13 @@ function OrgMeta({repos}:any): JSX.Element {
   const [loading, setLoading] = useState(true)
   const { goodRepos, badRepos, venn }  = useMemo(() => {
 
+
+
     setLoading(false)
     const goodR:IWeightedRepo[] = mostPopularRepo(repos) as IWeightedRepo[];
     const badR:IWeightedRepo[] = mostProblematicRepo(repos) as IWeightedRepo[];
-    const venn:IWeightedRepo[] = intersectionOfGoodAndBadRepos(goodR, badR)
+    const venn:string[] = intersectionOfGoodAndBadRepos(goodR, badR)
+
     return {
       goodRepos: goodR,
       badRepos: badR,

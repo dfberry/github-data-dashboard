@@ -1,8 +1,8 @@
 import { sort } from "fast-sort";
 import { isOneYearOldPlus } from "./compare";
-import { IWeightedRepo } from "./types"
+import { IWeightedRepo } from "./types";
 
-export function mostPopularRepo(dataset: any):IWeightedRepo[] {
+export function mostPopularRepo(dataset: any): IWeightedRepo[] {
   // watchers + stars + forks
   const newDataSet = dataset.map((repo: any) => {
     return {
@@ -10,22 +10,21 @@ export function mostPopularRepo(dataset: any):IWeightedRepo[] {
       weight: repo?.watchers + repo?.stars + repo?.forks,
     };
   });
-  const sorted = sort(newDataSet).by([{ desc: (u:any) => u.weight }]);
+  const sorted = sort(newDataSet).by([{ desc: (u: any) => u.weight }]);
   return sorted.slice(0, 20) as IWeightedRepo[];
 }
-export function mostProblematicRepo(dataset: any):IWeightedRepo[] {
+export function mostProblematicRepo(dataset: any): IWeightedRepo[] {
   // issues + prs
   const newDataSet = dataset.map((repo: any) => {
-
     const issuesNumeric = repo?.issues || 0;
-    const prsNumeric  = repo?.prs || 0;
+    const prsNumeric = repo?.prs || 0;
 
     return {
       name: repo?.repositoryName,
       weight: issuesNumeric + prsNumeric,
     };
   });
-  const sorted = sort(newDataSet).by([{ desc: (u:any) => u.weight }]);
+  const sorted = sort(newDataSet).by([{ desc: (u: any) => u.weight }]);
   return sorted.slice(0, 20) as IWeightedRepo[];
 }
 export function shouldBeArchived(dataset: any) {
@@ -40,22 +39,34 @@ export function shouldAddLicense(dataset: any) {
   return dataset.filter((repo: any) => !repo?.legal?.license);
 }
 
-const operation = (list1:IWeightedRepo[], list2:IWeightedRepo[], isUnion = false) =>
-    list1.filter(
-        (set => a => isUnion === set.has(a.repositoryName))(new Set(list2.map(b => b.repositoryName)))
-    );
+// const operation = (
+//   list1: IWeightedRepo[],
+//   list2: IWeightedRepo[],
+//   isUnion = false
+// ) =>
+//   list1.filter(
+//     (
+//       (set) => (a) =>
+//         isUnion === set.has(a.repositoryName)
+//     )(new Set(list2.map((b) => b.repositoryName)))
+//   );
 // Following functions are to be used:
-const inBoth = (list1:IWeightedRepo[], list2:IWeightedRepo[]) => operation(list1, list2, true)
-      //inFirstOnly = operation,
-      //inSecondOnly = (list1, list2) => inFirstOnly(list2, list1);
+// const inBoth = (list1: IWeightedRepo[], list2: IWeightedRepo[]) =>
+//   operation(list1, list2, true);
+//inFirstOnly = operation,
+//inSecondOnly = (list1, list2) => inFirstOnly(list2, list1);
 
- export function intersectionOfGoodAndBadRepos(a:IWeightedRepo[], b:IWeightedRepo[]):IWeightedRepo[]{
-//   const venn = inBoth(a, b);
-//   console.log(venn)
-//   return venn
-let arr1 = a.filter(e => {
-  return b.some(item => item.repositoryName === e.repositoryName); // take the ! out and you're done
-});
-console.log(arr1)
-return [...arr1]
- }
+export function intersectionOfGoodAndBadRepos(
+  a: IWeightedRepo[],
+  b: IWeightedRepo[]
+): string[] {
+
+  let arr1 = a
+    .filter((e) => {
+      return b.some((item) => item.name === e.name);
+    })
+    .map((item) => item.name)
+    .sort();
+
+  return arr1;
+}

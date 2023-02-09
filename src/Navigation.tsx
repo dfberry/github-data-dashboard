@@ -8,7 +8,7 @@ const Navigation = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <Link to="/">Azure-sample</Link> &nbsp;|&nbsp;
             <Link to="/orgmeta">Good & Bad</Link> &nbsp;|&nbsp;
-            <Link to="/repo?name=js-e2e">Repos</Link> &nbsp;|&nbsp;
+            <Link to="/repo?owner=azure-samples&name=js-e2e">Repos</Link> &nbsp;|&nbsp;
             <Link to="/summary">Summary</Link>&nbsp;
           </div>
         </div>

@@ -66,7 +66,6 @@ function Table({ columns, data }: any) {
 
     const url = `https://github.com/${owner}/${name}`;
 
-
     const columns =  [
           {
             Header: "#",
@@ -85,6 +84,7 @@ function Table({ columns, data }: any) {
               return (<a href={url} target='_blank' rel="noreferrer">{name}</a>)
             },
             accessor: "customDateUploaded",
+            
             Cell: (row: any) => {
 
               const currentDate = row.cell.value;

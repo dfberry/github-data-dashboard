@@ -1,0 +1,46 @@
+{
+  "lastIssue": {
+    "title": "Localization documentation",
+    "url": "https://github.com/Azure-Samples/active-directory-b2c-custom-policy-starterpack/issues/6",
+    "issueNumber": 6,
+    "state": "OPEN",
+    "createdAt": "2017-07-25T18:29:30Z",
+    "closedAt": null,
+    "participants": [
+      {
+        "login": "onionhammer",
+        "name": "Erik O'Leary",
+        "url": "https://github.com/onionhammer"
+      },
+      {
+        "login": "iliosana",
+        "name": null,
+        "url": "https://github.com/iliosana"
+      }
+    ]
+  },
+  "lastCommit": {
+    "messageHeadline": "Email regex restriction improvement",
+    "oid": "29424bc7a580c1ac8466d1200d14b8d37a7e8fff",
+    "message": "Email regex restriction improvement",
+    "author": {
+      "name": "Yoel Hor",
+      "email": "yoelhor@live.com",
+      "date": "2022-10-21T15:04:06+03:00"
+    },
+    "status": null,
+    "authoredDate": "2022-10-21T12:04:06Z",
+    "pushedDate": "2022-10-21T12:04:12Z",
+    "committedDate": "2022-10-21T12:04:06Z"
+  },
+  "lastPr": {
+    "prsByBranch": [
+      {
+        "name": "main",
+        "associatedPullRequests": {
+          "nodes": []
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+
+  "lastIssue": {
+    "title": "Authorization blocked in Silent flow client created",
+    "url": "https://github.com/Azure-Samples/js-e2e/issues/15",
+    "issueNumber": 15,
+    "state": "CLOSED",
+    "createdAt": "2021-08-31T19:19:53Z",
+    "closedAt": "2021-08-31T19:28:19Z",
+    "participants": [
+      {
+        "login": "adrian-badulescu",
+        "name": "Adrian Badulescu",
+        "url": "https://github.com/adrian-badulescu"
+      }
+    ]
+  },
+  "lastCommit": {
+    "messageHeadline": "Create convert-into-and-out-of-string.js",
+    "oid": "62565d09ebdc51a901510faf7af570a28f6bbbef",
+    "message": "Create convert-into-and-out-of-string.js",
+    "author": {
+      "name": "Dina Berry",
+      "email": "diberry@microsoft.com",
+      "date": "2023-01-19T11:22:48-08:00"
+    },
+    "status": null,
+    "authoredDate": "2023-01-19T19:22:48Z",
+    "pushedDate": "2023-01-19T19:22:49Z",
+    "committedDate": "2023-01-19T19:22:48Z"
+  },
+  "lastPr": {
+    "prsByBranch": [
+      {
+        "name": "main",
+        "associatedPullRequests": {
+          "nodes": []
+        }
+      }
+    ]
+  }
+}
