@@ -1,8 +1,18 @@
 import { sort } from "fast-sort";
 import { isOneYearOldPlus } from "./compare";
-import { IWeightedRepo } from "./types";
+import { IWeightedRepo, IRepo } from "./types";
 
-export function mostPopularRepo(dataset: any): IWeightedRepo[] {
+export function filterActiveRepos(dataset: IRepo[]):IRepo[]{
+
+  const tempDataSet = JSON.parse(JSON.stringify(dataset))
+  const filteredData = tempDataSet.filter((repo:IRepo)=>{
+    return repo.is.isArchived===false
+  })
+  return filteredData;
+}
+
+export function mostPopularRepo(dataset: IRepo[]): IWeightedRepo[] {
+
   // watchers + stars + forks
   const newDataSet = dataset.map((repo: any) => {
     return {
@@ -13,11 +23,11 @@ export function mostPopularRepo(dataset: any): IWeightedRepo[] {
   const sorted = sort(newDataSet).by([{ desc: (u: any) => u.weight }]);
   return sorted.slice(0, 20) as IWeightedRepo[];
 }
-export function mostProblematicRepo(dataset: any): IWeightedRepo[] {
+export function mostProblematicRepo(dataset: IRepo[]): IWeightedRepo[] {
   // issues + prs
-  const newDataSet = dataset.map((repo: any) => {
+  const newDataSet = dataset.map((repo: IRepo) => {
     const issuesNumeric = repo?.issues || 0;
-    const prsNumeric = repo?.prs || 0;
+    const prsNumeric = repo?.pr || 0;
 
     return {
       name: repo?.repositoryName,

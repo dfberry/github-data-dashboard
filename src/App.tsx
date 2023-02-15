@@ -7,6 +7,7 @@ import OrgMeta from "./OrgMeta";
 import { Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import {useState} from 'react'
+import { IRepo } from './utilities/types' 
 
 // Add by wrapping HTML with <ReactQueryDevtools initialIsOpen/>
 //import { ReactQueryDevtools } from 'react-query/devtools';
@@ -25,14 +26,18 @@ const queryClient = new QueryClient({
 
 function App(): JSX.Element {
 
-  const [dataset, setDataSet ] = useState({})
+  const [dataset, setDataSet ] = useState<IRepo[]>()
+
+  function setOriginalData(data:IRepo[]){
+    setDataSet(data)
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
       <div className="App">
         <Layout>
           <Routes>
-            <Route path="/" element={<Org setDataSet={setDataSet}/>} />
+            <Route path="/" element={<Org setDataSet={setOriginalData}/>} />
             <Route path="/repo" element={<Repo />} />
             <Route path="/orgmeta" element={<OrgMeta repos={dataset} />}/>
             <Route path="/summary" element={<Summary />} />

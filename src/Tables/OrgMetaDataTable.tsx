@@ -96,11 +96,11 @@ function Table({ columns, data }: any) {
 
 function DataTableOrgMeta({ data, type, venn }: any): JSX.Element {
 
-  const explanation = (type.toLowerCase()==="good") ? "watchers + stars + forks" : "issues + prs"
+  const explanation = (type.toLowerCase()==="good") ? "Customer engagement (watchers+starts+forks)" : "Customer satisfaction (issues + prs)"
 
   const columns = [
     {
-      Header: `${data.length} ${type} repos (${explanation})`,
+      Header: `${explanation}`,
       columns: [
         {
           Header: "#",

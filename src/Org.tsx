@@ -2,7 +2,7 @@ import "./App.css";
 import DataTableOrg from "./Tables/OrgDataTable";
 import { useQuery } from "react-query";
 import { ErrorBoundary } from "react-error-boundary";
-
+import { IRepo } from "./utilities/types";
 function ErrorFallback({ error, resetErrorBoundary }: any) {
   return (
     <div role="alert">
@@ -22,7 +22,7 @@ function Org({setDataSet}:any): JSX.Element {
     const url = `${base}/org?code=${code}`;
 
     const response = await fetch(url);
-    const json = await response.json()
+    const json:IRepo[] = await response.json()
 
     json.map((repo:any):any =>{
       return repo.repositoryName = repo.repositoryName.toLowerCase()

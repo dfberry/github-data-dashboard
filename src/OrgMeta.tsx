@@ -2,8 +2,8 @@ import "./App.css";
 import DataTableOrgMeta from "./Tables/OrgMetaDataTable";
 import { ErrorBoundary } from "react-error-boundary";
 import { useMemo, useState } from "react";
-import { mostPopularRepo, mostProblematicRepo, intersectionOfGoodAndBadRepos } from "./utilities/query";
-import { IWeightedRepo } from "./utilities/types"
+import { filterActiveRepos, mostPopularRepo, mostProblematicRepo, intersectionOfGoodAndBadRepos } from "./utilities/query";
+import { IWeightedRepo, IRepo } from "./utilities/types"
 
 function ErrorFallback({ error, resetErrorBoundary }: any) {
   return (
@@ -15,7 +15,9 @@ function ErrorFallback({ error, resetErrorBoundary }: any) {
   );
 }
 
-function OrgMeta({repos}:any): JSX.Element {
+function OrgMeta({repos}:{repos:IRepo[] | undefined}): JSX.Element {
+
+  console.log(`repos length ${repos?.length}`);
 
   const [loading, setLoading] = useState(true)
   const { goodRepos, badRepos, venn }  = useMemo(() => {
@@ -23,8 +25,9 @@ function OrgMeta({repos}:any): JSX.Element {
 
 
     setLoading(false)
-    const goodR:IWeightedRepo[] = mostPopularRepo(repos) as IWeightedRepo[];
-    const badR:IWeightedRepo[] = mostProblematicRepo(repos) as IWeightedRepo[];
+    const activeReposOnly:IRepo[] = (repos && repos.length>0) ? filterActiveRepos(repos) as IRepo[] : []
+    const goodR:IWeightedRepo[] = mostPopularRepo(activeReposOnly) as IWeightedRepo[];
+    const badR:IWeightedRepo[] = mostProblematicRepo(activeReposOnly) as IWeightedRepo[];
     const venn:string[] = intersectionOfGoodAndBadRepos(goodR, badR)
 
     return {
