@@ -1,13 +1,14 @@
+import { useState } from 'react';
+import { QueryClient, QueryClientProvider } from "react-query";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import Layout from "./Layout";
 import Org from "./Org";
+import OrgMeta from "./OrgMeta";
 import Repo from "./Repo";
 import Summary from "./Summary";
-import Layout from "./Layout";
-import OrgMeta from "./OrgMeta";
-import { Routes, Route } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
-import {useState} from 'react'
-import { IRepo } from './utilities/types' 
+import { IRepo, ISummaryAggregateItem } from './utilities/types';
+import { aggregateSummaryDate } from './utilities/query';
 
 // Add by wrapping HTML with <ReactQueryDevtools initialIsOpen/>
 //import { ReactQueryDevtools } from 'react-query/devtools';
@@ -26,10 +27,15 @@ const queryClient = new QueryClient({
 
 function App(): JSX.Element {
 
-  const [dataset, setDataSet ] = useState<IRepo[]>()
+  const [dataset, setDataSet ] = useState<IRepo[]>([])
+  const [summaryAggregatedData, setSummaryAggregatedData] = useState<ISummaryAggregateItem[]>([])
 
   function setOriginalData(data:IRepo[]){
+
+    const sum:ISummaryAggregateItem[] = aggregateSummaryDate(data)
+
     setDataSet(data)
+    setSummaryAggregatedData(sum) 
   }
 
   return (
@@ -40,7 +46,7 @@ function App(): JSX.Element {
             <Route path="/" element={<Org setDataSet={setOriginalData}/>} />
             <Route path="/repo" element={<Repo />} />
             <Route path="/orgmeta" element={<OrgMeta repos={dataset} />}/>
-            <Route path="/summary" element={<Summary />} />
+            <Route path="/summary" element={<Summary aggData={summaryAggregatedData} />} />
             <Route path="*" element={<Org />} />
           </Routes>
         </Layout>

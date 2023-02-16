@@ -1,12 +1,10 @@
-import { useQuery } from "react-query";
-import "./App.css";
-//import { useState } from 'react';
-import { useSearchParams } from "react-router-dom";
-import DataTableRepos from "./Tables/RepoDataTable";
-import RepoLast from "./RepoLast";
 import { ErrorBoundary } from "react-error-boundary";
-//import {timeSeriesItem} from './Models/timeSeries';
-//import {compareASC} from './utilities/compare';
+import { useQuery } from "react-query";
+import { useSearchParams } from "react-router-dom";
+import "./App.css";
+import { ErrorFallback } from './Error';
+import RepoLast from "./RepoLast";
+import DataTableRepos from "./Tables/RepoDataTable";
 
 type RepoItem = {
   forks: number;
@@ -16,27 +14,10 @@ type RepoItem = {
   pr: number;
 }
 
-function ErrorFallback({ error, resetErrorBoundary }: any) {
-  return (
-    <div role="alert">
-      <p>Something went wrong:</p>
-      <pre>{error.message}</pre>
-      <button onClick={resetErrorBoundary}>Try again</button>
-    </div>
-  );
-}
-
 function Repo(): JSX.Element {
   const [searchParams] = useSearchParams();
   const owner = searchParams.get("owner") || "";
   const name = searchParams.get("name") || "";
-
-  // const [issues, setIssues] = useState<timeSeriesItem[]>();
-  // const [prs, setPrs] = useState<timeSeriesItem[]>();
-  // const [starts, setStars] = useState<timeSeriesItem[]>();
-  // const [forks, setForks] = useState<timeSeriesItem[]>();
-
-
 
   const { status, data, error, isFetching } = useRepo(
     searchParams.get("name") || ""

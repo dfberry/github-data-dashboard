@@ -1,67 +1,24 @@
+import { useMemo } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { useQuery } from "react-query";
 import SummaryChart from "./Charts/SummaryChart";
-import { ErrorBoundary } from "react-error-boundary";
-import { useMemo } from "react";
-import { compareASC, compareDESC, clean50 } from "./utilities/compare";
+import SummaryAggregateDataTable from './Tables/SummaryAggregateDataTable';
+import { ErrorFallback } from './Error';
 import SummaryDataTable from "./Tables/SummaryDataTable";
+import { clean50 } from "./utilities/compare";
+import { sortByDateAsc, sortByDataDesc } from "./utilities/sort";
+import { ISummary, ISummaryRow, ISummaryAggregateItem } from "./utilities/types";
 
-function ErrorFallback({ error, resetErrorBoundary }: any) {
-  return (
-    <div role="alert">
-      <p>Something went wrong:</p>
-      <pre>{error.message}</pre>
-      <button onClick={resetErrorBoundary}>Try again</button>
-    </div>
-  );
-}
+function Summary({ aggData }: { aggData: ISummaryAggregateItem[]}) {
 
-type IDataRow = {
-  date: string;
-  count: string;
-};
-
-type IData = {
-  summaryText: string;
-  raw: IDataRow[];
-};
-
-function sortDataAsc(data: IData | undefined) {
-  if (
-    data !== null &&
-    data !== undefined &&
-    data.raw &&
-    Array.isArray(data.raw) &&
-    data.raw.length > 0
-  ) {
-    const rawData = JSON.parse(JSON.stringify(data.raw));
-    return rawData.sort(compareASC);
-  } else {
-    return [];
-  }
-}
-function sortDataDesc(data: IData | undefined) {
-  if (
-    data !== null &&
-    data !== undefined &&
-    data.raw &&
-    Array.isArray(data.raw) &&
-    data.raw.length > 0
-  ) {
-    const rawData = JSON.parse(JSON.stringify(data.raw));
-    return rawData.sort(compareDESC);
-  } else {
-    return [];
-  }
-}
-
-function Summary(): JSX.Element {
   const { status, data, error, isFetching } = useSummary();
-  const graphData: IDataRow[] = useMemo<IDataRow[]>(
-    () => sortDataAsc(data),
+
+  const graphData: ISummaryRow[] = useMemo<ISummaryRow[]>(
+    () => sortByDateAsc(data?.raw),
     [data]
   );
-  const tableData: IDataRow[] = useMemo<IDataRow[]>(
-    () => sortDataDesc(data),
+  const tableData: ISummaryRow[] = useMemo<ISummaryRow[]>(
+    () => sortByDataDesc(data?.raw),
     [data]
   );
 
@@ -71,14 +28,14 @@ function Summary(): JSX.Element {
     const response = await fetch(`${url}/sum?code=${code}`);
     let json = await response.json();
 
-    // From full date to readable data
+    // From full date to readable date
     json.map((item: any) => {
       const newDate = item.date.slice(0, 10);
       item.date = newDate;
       return item;
     });
 
-    const arrangedData = {
+    const arrangedData:ISummary = {
       summaryText: `Last scrape on ${json[0]?.date} with ${json[0]?.count} repos.`,
       raw: clean50(json),
     };
@@ -86,16 +43,10 @@ function Summary(): JSX.Element {
   }
 
   function useSummary() {
-    return useQuery(
-      {
-        queryKey: ["Summary"],
-        queryFn: getSummary,
-      }
-      // , {
-      //   onError: (error) => {
-      //       console.log(error);
-      //   }});
-    );
+    return useQuery({
+      queryKey: ["Summary"],
+      queryFn: getSummary,
+    });
   }
 
   return (
@@ -116,6 +67,7 @@ function Summary(): JSX.Element {
               <>
                 <p>{data.summaryText}</p>
                 <SummaryChart data={graphData} />
+                <SummaryAggregateDataTable data={aggData} />
                 <SummaryDataTable data={tableData.slice(0, 30)} />
               </>
             )}

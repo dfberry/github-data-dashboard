@@ -3,15 +3,7 @@ import DataTableOrg from "./Tables/OrgDataTable";
 import { useQuery } from "react-query";
 import { ErrorBoundary } from "react-error-boundary";
 import { IRepo } from "./utilities/types";
-function ErrorFallback({ error, resetErrorBoundary }: any) {
-  return (
-    <div role="alert">
-      <p>Something went wrong:</p>
-      <pre>{error.message}</pre>
-      <button onClick={resetErrorBoundary}>Try again</button>
-    </div>
-  );
-}
+import { ErrorFallback } from './Error';
 
 function Org({setDataSet}:any): JSX.Element {
   const { status, data, error, isFetching } = useOrg();

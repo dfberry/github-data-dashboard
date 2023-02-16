@@ -4,16 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import LastIssueDataTable from "./Tables/RepoLastIssueDataTable";
 import LastCommitDataTable from "./Tables/RepoLastCommitDataTable";
 import { ErrorBoundary } from "react-error-boundary";
-
-function ErrorFallback({ error, resetErrorBoundary }: any) {
-  return (
-    <div role="alert">
-      <p>Something went wrong:</p>
-      <pre>{error.message}</pre>
-      <button onClick={resetErrorBoundary}>Try again</button>
-    </div>
-  );
-}
+import { ErrorFallback } from './Error';
 
 function RepoLast(): JSX.Element {
   const [searchParams] = useSearchParams();

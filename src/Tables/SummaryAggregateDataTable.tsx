@@ -69,15 +69,24 @@ function Table({ columns, data }: any) {
     )
 }
 
-function LastPrDataTable({ data }: any): JSX.Element {
+function SummaryAggregateDataTable({ data }: any): JSX.Element {
     const columns = [
         {
-            Header: '#',
-            id: 'rowNumber'
-        },
-        {
-            Header: 'Last PR',
-            accessor: 'associatedPullRequests.nodes[0].number'
+            Header: `Aggregate questions`,
+            columns: [
+                {
+                    Header: '#',
+                    id: 'rowNumber'
+                },
+                {
+                    Header: 'Topic',
+                    accessor: 'name'
+                },
+                {
+                    Header: 'Count',
+                    accessor: 'count'
+                }
+            ]
         }
     ]
 
@@ -88,4 +97,4 @@ function LastPrDataTable({ data }: any): JSX.Element {
     )
 }
 
-export default LastPrDataTable
+export default SummaryAggregateDataTable
