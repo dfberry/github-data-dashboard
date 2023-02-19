@@ -1,3 +1,10 @@
+## 0.2.4
+
+* Jon Gallant request:
+    * Feature - orgs list of repos should provide direct link to GitHub - svg offsite link
+* Add package.json's version to footer
+* Correct spelling from `starts` to `stars`
+
 ## 0.2.3
 
 * Venn diagram on good/bad

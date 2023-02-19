@@ -1,7 +1,8 @@
 {
   "name": "github-repo-dashboard",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": true,
+  "url": "https://github.com/dfberry/github-data-dashboard",
   "dependencies": {
     "@tanstack/react-query": "^4.20.9",
     "@tanstack/react-query-devtools": "^4.22.0",

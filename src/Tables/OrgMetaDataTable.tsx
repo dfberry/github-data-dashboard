@@ -109,7 +109,7 @@ function Table({ columns, data }: any) {
 function DataTableOrgMeta({ data, type, venn }: any): JSX.Element {
     const explanation =
         type.toLowerCase() === 'good'
-            ? 'Customer engagement (watchers+starts+forks)'
+            ? 'Customer engagement (watchers+stars+forks)'
             : 'Customer satisfaction (issues + prs)'
 
     const columns = [

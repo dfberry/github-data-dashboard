@@ -5,7 +5,7 @@ import { useTable, useSortBy, useFilters } from 'react-table'
 import styled from 'styled-components'
 import { shortDate } from '../utilities/filters'
 import { isOneYearOldPlus } from '../utilities/compare'
-
+import {ReactComponent as OffSiteLink} from '../images/off-site.svg';
 // filters
 import { TextSearchFilter } from '../utilities/filters'
 
@@ -140,7 +140,9 @@ function DataTableOrg({ data, collectionDate }: any): JSX.Element {
                         const repoName = row.cell.value
                         if (!repoName) return ''
                         const url = `/repo?name=${repoName}&owner=azure-samples`
-                        return <Link to={url}>{repoName}</Link>
+                        const githubUrl =`https://github.com/azure-samples/${repoName}`
+
+                        return <><Link to={url}>{repoName}</Link>&nbsp;<a href={githubUrl} target="_blank" rel="noreferrer"><OffSiteLink/></a></>
                     }
                 },
                 {
