@@ -1,6 +1,6 @@
 {
   "name": "github-repo-dashboard",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "private": true,
   "url": "https://github.com/dfberry/github-data-dashboard",
   "dependencies": {

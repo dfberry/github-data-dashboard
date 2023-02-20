@@ -175,37 +175,17 @@ function DataTableOrg({ data, collectionDate }: any): JSX.Element {
                         return d?.is?.isTemplate.toString()
                     }
                 },
-                // TBD - doesn't work with personal GitHub account
-                // {
-                //   Header: "Private",
-                //   accessor: d => { return d?.is?.isPrivate.toString()}
-                // },
-
                 {
                     Header: 'Archived',
-                    accessor: 'is',
-
-                    //            return d?.is?.isArchived.toString();
-
+                    accessor: 'is.isArchived',
                     Cell: (row: any) => {
-                        const isArchived = row.cell.value?.isArchived || null
-                        if (!isArchived) return ''
+                        const isArchived = row.cell.value as boolean
+                        const archiveClassName = isArchived ? 'DisregardBox' : null
 
-                        let archiveClass = ''
-                        if (isArchived === true) {
-                            archiveClass = 'DisregardBox'
-                        }
-                        return (
-                            <div className={archiveClass}>
-                                {isArchived.toString()}
-                            </div>
-                        )
+                        if (!isArchived) return ''
+                        return <div className={archiveClassName}>true</div>
                     }
                 },
-                // {
-                //   Header: "Disabled",
-                //   accessor: d => { return d?.is?.isDisabled.toString()}
-                // },
                 {
                     Header: 'Created',
                     accessor: 'date.createdAt',
@@ -218,20 +198,13 @@ function DataTableOrg({ data, collectionDate }: any): JSX.Element {
                 },
                 {
                     Header: 'Last push',
-                    accessor: 'lastPushToDefaultBranch',
+                    accessor: 'lastPushToDefaultBranch.pushedDate',
                     Cell: (row: any) => {
                         const date = row.cell.value
-                        if (!date?.pushedDate) return ''
-                        let lastPushClass = ''
+                        const dateClassName = isOneYearOldPlus(date) ? 'WarningBox' : null
 
-                        if (isOneYearOldPlus(date?.pushedDate)) {
-                            lastPushClass = 'WarningBox'
-                        }
-                        return (
-                            <div className={lastPushClass}>
-                                {shortDate(date?.pushedDate)}
-                            </div>
-                        )
+                        if (!date) return ''
+                        return <div className={dateClassName}>{shortDate(date)}</div>
                     }
                 }
             ]

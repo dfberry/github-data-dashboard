@@ -1,3 +1,8 @@
+## 0.2.5
+
+* Jon Gallant bug:
+    * last push pr in org repo - sort works
+
 ## 0.2.4
 
 * Jon Gallant request:
